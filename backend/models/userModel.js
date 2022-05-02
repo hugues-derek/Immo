@@ -28,7 +28,7 @@ const userSchema = new Schema(
     status: {
       type: String,
       required: true,
-      enum: ["proprio", "client"],
+      enum: ["proprio", "client", "admin"],
     },
     imageUrl: {
       type: String,

@@ -1,6 +1,6 @@
 const { GraphQLList, GraphQLID } = require("graphql");
-const { UserType, AnnonceType } = require("./types");
-const { User, Annonce } = require("../models");
+const { UserType, AnnonceType, VisiteType, BiensType } = require("./types");
+const { User, Annonce, Visite, Bien } = require("../models");
 
 // tous les utilisateurs
 const users = {
@@ -45,9 +45,67 @@ const annonce = {
   },
 };
 
+//Toutes les visites
+const visites = {
+  type: new GraphQLList(VisiteType),
+  description: "La liste de toutes les visites",
+  resolve: () => Visite.find(),
+};
+
+// visite par Id
+const visite = {
+  type: VisiteType,
+  description: "visite par l'id",
+  args: {
+    id: {
+      type: GraphQLID,
+    },
+  },
+  async resolve(_, { id }) {
+    return Visite.findById(id);
+  },
+};
+
+//bien par l'id
+const bien = {
+  type: BiensType,
+  description: "Bien par l'id",
+  args: {
+    id: { type: GraphQLID },
+  },
+  async resolve(_, args) {
+    return await Bien.findById(args.id);
+  },
+};
+
+//bien par l'utilisateur
+const bienUser = {
+  type: new GraphQLList(BiensType),
+  description: "Avoir les biens par l'utilisateur",
+  args: {
+    id: { type: GraphQLID },
+  },
+  async resolve(_, args) {
+    const biens = await Bien.find({ propritaire: args.id });
+    return biens;
+  },
+};
+//Tous les biens
+const biens = {
+  type: new GraphQLList(BiensType),
+  resolve() {
+    return Bien.find();
+  },
+};
+
 module.exports = {
   user,
   users,
   annonces,
   annonce,
+  visites,
+  visite,
+  bien,
+  biens,
+  bienUser,
 };

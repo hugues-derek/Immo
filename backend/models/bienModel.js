@@ -6,14 +6,17 @@ const bienSchema = new Schema(
       type: String,
       required: true,
     },
-    proprio: Schema.Types.ObjectId,
+    proprietaire: {
+      type: String,
+      required: true,
+    },
 
     superficie: {
       type: Number,
       required: true,
     },
 
-    images: {
+    photos: {
       type: [String],
     },
 

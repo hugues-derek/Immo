@@ -4,12 +4,17 @@ const visiteSchema = new Schema(
   {
     dateVisite: {
       type: Date,
-      required: true,
+      default: Date.now,
     },
     heureVisite: {
       type: String,
+      required: true,
     },
     visiteur: {
+      type: String,
+      required: true,
+    },
+    bienVisite: {
       type: String,
       required: true,
     },

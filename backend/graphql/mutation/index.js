@@ -5,6 +5,10 @@ const { deleteUser } = require("./User/deleteUser");
 const { login } = require("./User/login");
 const { addAnnonce } = require("./Annonce/addAnnonce");
 const { deleteAnnonce } = require("./Annonce/deleteAnnonce");
+const { updateAnnonce } = require("./Annonce/updateAnnonce");
+const { addVisite, deleteVisite, updateVisite } = require("./Visite/addVisite");
+const { addBien, deleteBien, updateBien } = require("./Bien/bien");
+const { uploadImage } = require("./ImageUpload/singleImage");
 
 const RootMutation = new GraphQLObjectType({
   name: "RootMutation",
@@ -16,6 +20,14 @@ const RootMutation = new GraphQLObjectType({
     login,
     addAnnonce,
     deleteAnnonce,
+    updateAnnonce,
+    addVisite,
+    deleteVisite,
+    updateVisite,
+    addBien,
+    deleteBien,
+    updateBien,
+    uploadImage,
   },
 });
 

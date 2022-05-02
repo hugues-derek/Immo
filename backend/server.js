@@ -1,10 +1,12 @@
 require("dotenv").config({ path: "./config/.env" });
 const express = require("express");
+const { ApolloServer } = require("apollo-server-express");
 const mongoose = require("mongoose");
 const { graphqlHTTP } = require("express-graphql");
 const graphql = require("graphql");
 const schema = require("./graphql/schema");
 const { authenticate } = require("./middleware/auth");
+const { graphqlUploadExpress } = require("graphql-upload");
 
 //Connection to DataBase
 mongoose.connect(
@@ -24,7 +26,8 @@ mongoose.connect(
 
 const app = express();
 const PORT = process.env.PORT;
-
+const server = new ApolloServer({ schema });
+server.start();
 app.use(authenticate);
 
 app.get("/", (req, res) => {
@@ -33,6 +36,7 @@ app.get("/", (req, res) => {
 
 app.use(
   "/graphql",
+  graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }),
   graphqlHTTP({
     schema,
     graphiql: true,

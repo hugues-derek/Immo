@@ -8,7 +8,7 @@ const {
   GraphQLNonNull,
 } = require("graphql");
 
-const { User } = require("../models");
+const { User, Bien } = require("../models");
 
 const UserType = new GraphQLObjectType({
   name: "UserType",
@@ -46,18 +46,23 @@ const BiensType = new GraphQLObjectType({
     id: {
       type: GraphQLID,
     },
-    situation_Geo: {
+    situationGeo: {
       type: GraphQLString,
     },
     proprietaire: {
       type: UserType,
+      async resolve(parent) {
+        return await User.findById(parent.proprietaire);
+      },
     },
     superficie: {
       type: GraphQLInt,
     },
-
     photos: {
-      type: GraphQLList[GraphQLString],
+      type: new GraphQLList(GraphQLString),
+    },
+    description: {
+      type: GraphQLString,
     },
   }),
 });
@@ -97,8 +102,20 @@ const VisiteType = new GraphQLObjectType({
     heureVisite: {
       type: GraphQLString,
     },
-    visiteur: {
+    dateVisite: {
       type: GraphQLString,
+    },
+    visiteur: {
+      type: UserType,
+      resolve(parent) {
+        return User.findById(parent.visiteur);
+      },
+    },
+    bienVisite: {
+      type: BiensType,
+      async resolve(parent) {
+        return await Bien.findById(parent.bienVisite);
+      },
     },
   }),
 });
