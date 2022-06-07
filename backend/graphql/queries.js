@@ -18,7 +18,10 @@ const user = {
       type: GraphQLID,
     },
   },
-  resolve: (_, { id }) => User.findById(id),
+  resolve: async (_, { id }) => {
+    const user = await User.findById(id);
+    if (!user) throw new Error("utilisateur introuvable");
+  },
 };
 
 //toutes les annonces
@@ -85,11 +88,13 @@ const bienUser = {
   args: {
     id: { type: GraphQLID },
   },
-  async resolve(_, args) {
+  async resolve(_, args, req) {
+    console.log(req);
     const biens = await Bien.find({ propritaire: args.id });
     return biens;
   },
 };
+
 //Tous les biens
 const biens = {
   type: new GraphQLList(BiensType),

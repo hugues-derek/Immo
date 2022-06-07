@@ -27,7 +27,9 @@ const updateUser = {
       password,
       user.password
     );
-    console.log(user);
+    if (verifiedUser.status !== "admin" && user._id !== verifiedUser._id)
+      throw new Error("Vous ne pouvez pas modifier cet user ");
+
     const validPassword = isSamePassword
       ? user.password
       : await bcrypt.encryptPassword(password);

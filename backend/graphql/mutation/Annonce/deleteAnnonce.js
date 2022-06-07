@@ -14,7 +14,8 @@ const deleteAnnonce = {
     const { verifiedUser } = req;
     let annonce = await Annonce.findById(id);
     if (!annonce) throw new Error("id incorrect");
-    if (verifiedUser._id != annonce.proprio) throw new Error("non authoriser");
+    if (verifiedUser._id !== annonce.proprio && verifiedUser.status !== "admin")
+      throw new Error("non authoriser");
     annonce = await Annonce.findByIdAndDelete(id);
     return annonce;
   },

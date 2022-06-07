@@ -23,6 +23,7 @@ const addVisite = {
   async resolve(_, args, req) {
     const { verifiedUser } = req;
     if (!verifiedUser) throw new Error("Non authoriser");
+
     const newVisite = new Visite({
       heureVisite: args.heureVisite,
       dateVisite: args.dateVisite,
@@ -47,7 +48,7 @@ const deleteVisite = {
     const { verifiedUser } = req;
     if (!verifiedUser) throw new Error("Non authoriser");
     const visite = await Visite.findById(id);
-    if (visite.visiteur !== verifiedUser._id)
+    if (visite.visiteur !== verifiedUser._id && verifiedUser.status !== "admin")
       throw new Error("Vous ne pouvez pas supprimer cette visite");
     return Visite.findByIdAndDelete(id);
   },
@@ -79,7 +80,7 @@ const updateVisite = {
     if (!verifiedUser) throw new Error("Non authoriser");
 
     const visite = await Visite.findById(args.id);
-    if (visite.visiteur !== verifiedUser._id)
+    if (visite.visiteur !== verifiedUser._id && verifiedUser.status !== "admin")
       throw new Error("Vous ne pouvez pas modifier cette visite");
     const updatedVisite = await Visite.findByIdAndUpdate(
       args.id,

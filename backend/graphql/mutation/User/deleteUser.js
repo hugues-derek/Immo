@@ -9,7 +9,13 @@ const deleteUser = {
     id: { type: GraphQLID },
   },
   async resolve(_, args, req) {
+    if (!req.verifiedUser) throw new Error("vous n'êtes pas authentifié");
+
+    if (req.verifiedUser.status !== "admin" && req.verifiedUser._id !== args.id)
+      throw new Error("vous ne pouvez pas modifier cet utilisateur");
+
     const user = await User.findByIdAndDelete(args.id);
+    if (!user) throw new Error("utilisateur introuvable");
     return user;
   },
 };

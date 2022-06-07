@@ -97,7 +97,10 @@ const updateBien = {
     if (!verifiedUser) throw new Error("non authoriser");
     const bien = await Bien.findById(args.id);
     console.log(verifiedUser._id, bien.proprietaire);
-    if (bien.proprietaire != verifiedUser._id)
+    if (
+      bien.proprietaire !== verifiedUser._id &&
+      verifiedUser.status !== "admin"
+    )
       throw new Error("Vous ne pouvez pas modifier ce bien");
 
     const updatedBien = await Bien.findByIdAndUpdate(args.id, {
