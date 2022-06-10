@@ -1,5 +1,6 @@
 require("dotenv").config({ path: "./config/.env" });
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const { graphqlHTTP } = require("express-graphql");
 const graphql = require("graphql");
@@ -25,6 +26,7 @@ mongoose.connect(
 
 const app = express();
 const PORT = process.env.PORT;
+app.use(cors());
 app.use(authenticate);
 
 app.get("/", (req, res) => {

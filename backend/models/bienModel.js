@@ -18,6 +18,7 @@ const bienSchema = new Schema(
 
     photos: {
       type: [String],
+      default: [],
     },
 
     description: {

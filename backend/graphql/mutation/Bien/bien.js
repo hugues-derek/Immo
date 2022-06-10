@@ -34,7 +34,7 @@ const addBien = {
     const { verifiedUser } = req;
     console.log(verifiedUser);
     if (!verifiedUser) throw new Error("non authentifier");
-    if (verifiedUser.status !== "proprio")
+    if (verifiedUser.status !== "proprio" && verifiedUser.status !== "admin")
       throw new Error("vous devez être propriétaire avant d'ajouter un bien");
 
     const newBien = new Bien({
